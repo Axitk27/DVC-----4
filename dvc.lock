@@ -1,0 +1,84 @@
+schema: '2.0'
+stages:
+  make_dataset:
+    cmd: .\.venv\Scripts\python.exe DVC_project/src/data/make_dataset.py
+    deps:
+    - path: DVC_project/src/data/make_dataset.py
+      hash: md5
+      md5: 0a23aff14fbfa788a8b0bdeccedde5e6
+      size: 3824
+    outs:
+    - path: DVC_project/data/raw
+      hash: md5
+      md5: baa43b70a6a4c8dac10639c6b987a43a.dir
+      size: 827973
+      nfiles: 2
+  make_preprocessing:
+    cmd: .\.venv\Scripts\python.exe DVC_project/src/data/make_preprocessing.py
+    deps:
+    - path: DVC_project/data/raw
+      hash: md5
+      md5: baa43b70a6a4c8dac10639c6b987a43a.dir
+      size: 827973
+      nfiles: 2
+    - path: DVC_project/src/data/make_preprocessing.py
+      hash: md5
+      md5: 52d35ba547ed3c898635979a626aa01a
+      size: 2605
+    outs:
+    - path: DVC_project/data/processed
+      hash: md5
+      md5: 07792f1ae1450328185231b92010cf46.dir
+      size: 566063
+      nfiles: 2
+  build_features:
+    cmd: .\.venv\Scripts\python.exe DVC_project/src/features/build_features.py
+    deps:
+    - path: DVC_project/data/processed
+      hash: md5
+      md5: 07792f1ae1450328185231b92010cf46.dir
+      size: 566063
+      nfiles: 2
+    - path: DVC_project/src/features/build_features.py
+      hash: md5
+      md5: 74c639472f066c48f527c5c1970b09c3
+      size: 2367
+    outs:
+    - path: DVC_project/data/interim
+      hash: md5
+      md5: 02146d70df5b51b6da2ac732ee48c24e.dir
+      size: 1118468
+      nfiles: 2
+  train_model:
+    cmd: .\.venv\Scripts\python.exe DVC_project/src/models/train_model.py
+    deps:
+    - path: DVC_project/data/interim
+      hash: md5
+      md5: 02146d70df5b51b6da2ac732ee48c24e.dir
+      size: 1118468
+      nfiles: 2
+    - path: DVC_project/src/models/train_model.py
+      hash: md5
+      md5: a59ef9e47f7b8bb7c43885f885746e39
+      size: 780
+    outs:
+    - path: DVC_project/models/model.pkl
+      hash: md5
+      md5: d0889af78fb23261555d9559d0d89f94
+      size: 134014
+  predict_model:
+    cmd: .\.venv\Scripts\python.exe DVC_project/src/models/predict_model.py
+    deps:
+    - path: DVC_project/models/model.pkl
+      hash: md5
+      md5: d0889af78fb23261555d9559d0d89f94
+      size: 134014
+    - path: DVC_project/src/models/predict_model.py
+      hash: md5
+      md5: 9162b677a366a44db1037a1b1f8b25f8
+      size: 1283
+    outs:
+    - path: DVC_project/reports/metrics.json
+      hash: md5
+      md5: c1c770764b0f8ba44e149deff19daac9
+      size: 145

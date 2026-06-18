@@ -1,0 +1,37 @@
+stages:
+  make_dataset:
+    cmd: .\.venv\Scripts\python.exe DVC_project/src/data/make_dataset.py
+    deps:
+    - DVC_project/src/data/make_dataset.py
+    outs:
+    - DVC_project/data/raw
+  make_preprocessing:
+    cmd: .\.venv\Scripts\python.exe DVC_project/src/data/make_preprocessing.py
+    deps:
+    - DVC_project/data/raw
+    - DVC_project/src/data/make_preprocessing.py
+    outs:
+    - DVC_project/data/processed
+  build_features:
+    cmd: .\.venv\Scripts\python.exe DVC_project/src/features/build_features.py
+    deps:
+    - DVC_project/data/processed
+    - DVC_project/src/features/build_features.py
+    outs:
+    - DVC_project/data/interim
+  train_model:
+    cmd: .\.venv\Scripts\python.exe DVC_project/src/models/train_model.py
+    deps:
+    - DVC_project/data/interim
+    - DVC_project/src/models/train_model.py
+    outs:
+    - DVC_project/models/model.pkl
+  predict_model:
+    cmd: .\.venv\Scripts\python.exe DVC_project/src/models/predict_model.py
+    deps:
+    - DVC_project/models/model.pkl
+    - DVC_project/src/models/predict_model.py
+    outs:
+    - DVC_project/reports/metrics.json
+
+
