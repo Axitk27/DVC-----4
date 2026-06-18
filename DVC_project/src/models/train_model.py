@@ -12,7 +12,7 @@ def load_params(params_path: str) -> dict:
 params = load_params('params.yaml')
 
 # fetch the data from data/processed
-train_data = pd.read_csv('./DVC_project/data/interim/train_bow.csv')
+train_data = pd.read_csv('./DVC_project/data/interim/train_tfidf.csv')
 
 X_train = train_data.iloc[:,0:-1].values
 y_train = train_data.iloc[:,-1].values
