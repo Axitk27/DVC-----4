@@ -3,6 +3,8 @@ stages:
     cmd: .\.venv\Scripts\python.exe DVC_project/src/data/make_dataset.py
     deps:
     - DVC_project/src/data/make_dataset.py
+    params:
+    - make_dataset.test_size
     outs:
     - DVC_project/data/raw
   make_preprocessing:
@@ -17,6 +19,8 @@ stages:
     deps:
     - DVC_project/data/processed
     - DVC_project/src/features/build_features.py
+    params:
+    - build_features.max_features
     outs:
     - DVC_project/data/interim
   train_model:
@@ -24,6 +28,9 @@ stages:
     deps:
     - DVC_project/data/interim
     - DVC_project/src/models/train_model.py
+    params:
+    - train_model.n_estimator
+    - train_model.learning_rate
     outs:
     - DVC_project/models/model.pkl
   predict_model:

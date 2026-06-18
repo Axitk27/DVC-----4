@@ -7,6 +7,9 @@ stages:
       hash: md5
       md5: 0a23aff14fbfa788a8b0bdeccedde5e6
       size: 3824
+    params:
+      params.yaml:
+        make_dataset.test_size: 0.2
     outs:
     - path: DVC_project/data/raw
       hash: md5
@@ -43,36 +46,43 @@ stages:
       hash: md5
       md5: 74c639472f066c48f527c5c1970b09c3
       size: 2367
+    params:
+      params.yaml:
+        build_features.max_features: 40
     outs:
     - path: DVC_project/data/interim
       hash: md5
-      md5: 504a5fd7a372ff5973dba5b881969f74.dir
-      size: 1118468
+      md5: 381253c3dc60db77af8f60142a0b1334.dir
+      size: 910928
       nfiles: 2
   train_model:
     cmd: .\.venv\Scripts\python.exe DVC_project/src/models/train_model.py
     deps:
     - path: DVC_project/data/interim
       hash: md5
-      md5: 504a5fd7a372ff5973dba5b881969f74.dir
-      size: 1118468
+      md5: 381253c3dc60db77af8f60142a0b1334.dir
+      size: 910928
       nfiles: 2
     - path: DVC_project/src/models/train_model.py
       hash: md5
       md5: a59ef9e47f7b8bb7c43885f885746e39
       size: 780
+    params:
+      params.yaml:
+        train_model.learning_rate: 0.3
+        train_model.n_estimator: 100
     outs:
     - path: DVC_project/models/model.pkl
       hash: md5
-      md5: 7fa845cdc63192322ff1a772fe10532e
-      size: 134014
+      md5: c9f123f9c5d096863541c8e18037d85a
+      size: 132286
   predict_model:
     cmd: .\.venv\Scripts\python.exe DVC_project/src/models/predict_model.py
     deps:
     - path: DVC_project/models/model.pkl
       hash: md5
-      md5: 7fa845cdc63192322ff1a772fe10532e
-      size: 134014
+      md5: c9f123f9c5d096863541c8e18037d85a
+      size: 132286
     - path: DVC_project/src/models/predict_model.py
       hash: md5
       md5: 9162b677a366a44db1037a1b1f8b25f8
@@ -80,5 +90,5 @@ stages:
     outs:
     - path: DVC_project/reports/metrics.json
       hash: md5
-      md5: 0057ceb07953177e97e131d9be356811
-      size: 144
+      md5: c4e2f3c1caa4a3eca390484c23ff79f0
+      size: 145

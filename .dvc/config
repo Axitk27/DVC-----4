@@ -1,0 +1,4 @@
+[core]
+    remote = origin
+['remote "origin"']
+    url = C:\Users\axitk\AppData\Local\Temp\data-storage
